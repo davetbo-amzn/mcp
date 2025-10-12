@@ -12,6 +12,10 @@ dependencies = [
     "mcp[cli]>=1.6.0",
     "fastmcp>=0.1.0",
     "pydantic>=2.10.6",
+    "boto3>=1.40.0",
+    "bedrock-agentcore>=0.1.7",
+    "strands-agents>=1.10.0",
+    "strands-agents-tools>=0.2.9"
 ]
 license = {text = "Apache-2.0"}
 license-files = ["LICENSE", "NOTICE" ]

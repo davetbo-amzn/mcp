@@ -244,7 +244,7 @@ class AgentCoreMemoryClient:
                     memory_record_id=record_data.get('memoryRecordId', ''),
                     content=record_data.get('content', ''),
                     timestamp=record_data.get('timestamp', datetime.now(timezone.utc)),
-                    relevance_score=record_data.get('relevanceScore', 0.0),
+                    relevance_score=record_data.get('score', 0.0),  # AWS API returns 'score', not 'relevanceScore'
                     namespace=namespace
                 )
                 records.append(record)

@@ -239,7 +239,7 @@ class AgentCoreMemoryClient:
             
             # Convert AWS response to MemoryRecord objects
             records = []
-            for record_data in response.get('memoryRecords', []):
+            for record_data in response.get('memoryRecordSummaries', []):
                 record = MemoryRecord(
                     memory_record_id=record_data.get('memoryRecordId', ''),
                     content=record_data.get('content', ''),

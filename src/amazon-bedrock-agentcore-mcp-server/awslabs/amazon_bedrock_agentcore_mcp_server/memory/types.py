@@ -6,7 +6,8 @@ the memory management system.
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List, Optional, Literal
+from typing import List, Optional, Literal, Dict, Any
+from pydantic import BaseModel, Field
 
 
 @dataclass
@@ -55,3 +56,72 @@ class MemoryRecord:
     timestamp: datetime
     relevance_score: float
     namespace: Optional[str] = None
+
+
+@dataclass
+class Memory:
+    """Represents an AgentCore memory resource.
+    
+    Attributes:
+        memory_id: Unique identifier for the memory resource
+        memory_name: Human-readable name for the memory
+        memory_arn: Amazon Resource Name for the memory
+        strategies: List of memory strategy configurations
+        created_at: When the memory resource was created
+    """
+    memory_id: str
+    memory_name: str
+    memory_arn: str
+    strategies: List[Dict[str, Any]]
+    created_at: datetime
+
+
+@dataclass
+class MemoryStrategy:
+    """Represents a memory strategy configuration.
+    
+    Attributes:
+        strategy_id: Unique identifier for the strategy
+        strategy_name: Human-readable name for the strategy
+        strategy_type: Type of strategy (SEMANTIC, SUMMARIZATION, USER_PREFERENCES)
+        namespaces: List of namespaces this strategy operates in
+    """
+    strategy_id: str
+    strategy_name: str
+    strategy_type: str
+    namespaces: List[str]
+
+
+class MemoryProviderSettings(BaseModel):
+    """Settings for a single memory provider.
+    
+    Attributes:
+        memory_id: Unique identifier for the memory resource
+        strategies: Dictionary mapping strategy types to strategy IDs
+        created_at: ISO 8601 timestamp when the memory was created
+    """
+    memory_id: str = Field(description="Memory resource ID")
+    strategies: Dict[str, str] = Field(
+        description="Map of strategy type to strategy ID",
+        default_factory=dict
+    )
+    created_at: str = Field(description="ISO 8601 timestamp of creation")
+
+
+class MemorySettings(BaseModel):
+    """Schema for memory_settings.json file.
+    
+    Supports multiple memory providers keyed by memory name.
+    
+    Attributes:
+        disable_memory: Flag to disable memory prompts if user declined
+        memory_providers: Dictionary of memory providers keyed by memory name
+    """
+    disable_memory: bool = Field(
+        default=False,
+        description="If true, user declined memory creation and should not be prompted again"
+    )
+    memory_providers: Dict[str, MemoryProviderSettings] = Field(
+        default_factory=dict,
+        description="Memory providers keyed by memory name"
+    )

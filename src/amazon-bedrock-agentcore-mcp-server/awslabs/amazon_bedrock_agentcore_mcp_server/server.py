@@ -197,7 +197,7 @@ def create_memory_event(
     retrieved later for personalized agent experiences.
     
     Args:
-        messages: List of [content, role] tuples. Roles must be USER, ASSISTANT, or TOOL
+        messages: List of [content, role] tuples. Roles must be USER, ASSISTANT, or TOOL.  Message text goes first, role goes second.
         session_id: Optional. Unique session identifier. Should be omitted on the first
              call in a session and the server will create the session_id and return it 
              for use in future calls in the same session. 
